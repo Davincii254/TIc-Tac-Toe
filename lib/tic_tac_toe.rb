@@ -1,11 +1,11 @@
 require 'pry'
 
-class TicTacToe 
+class TicTacToe
 
     attr_accessor :board, :winning_player, :winning_combo
 
     def initialize
-        @board =["","","","","","","","","",]
+        @board = [" ", " ", " ", " ", " ", " ", " ", " ", " ",]
         @winning_player = ""
         @winning_combo = []
     end
@@ -20,9 +20,9 @@ class TicTacToe
         [0,4,8],
         [2,4,6]
     ]
-    
+
     def display_board
-        puts " #{self.board[0]} | #{self.board[1]} | #{self.board[2]} \n------------\n #{self.board[3]} | #{self.board[4]} | #{self.board[5]} \n--------------\n #{self.board[6]} | #{self.board[7]} | #{self.board[8]} "
+        puts " #{self.board[0]} | #{self.board[1]} | #{self.board[2]} \n-----------\n #{self.board[3]} | #{self.board[4]} | #{self.board[5]} \n-----------\n #{self.board[6]} | #{self.board[7]} | #{self.board[8]} "
     end
 
     def input_to_index(user_input)
@@ -38,7 +38,8 @@ class TicTacToe
     end
 
     def valid_move?(index)
-        if index <0 || index >8 || self.position_taken?(index)
+        # if index != /[0-8]/ || self.position_taken?(index)
+        if index < 0 || index > 8 || self.position_taken?(index)
             return false
         end
         return true
@@ -63,9 +64,8 @@ class TicTacToe
         end
         return current_player
     end
-    
+
     def turn
-        puts "Choose a number 1-9 of where you want to play your next move:"
         user_input = gets.chomp
         selected_index = input_to_index(user_input)
         token = current_player
@@ -73,18 +73,18 @@ class TicTacToe
             move(selected_index, token)
             display_board
         else
-        puts "Invalid Move, Please try again"
-        turn
+            puts "Invalid move. Please try again:"
+            turn
         end
     end
 
     def won?
-        WIN_COMBINATIONS.each.do |combo|
-            if self.board[combo[0]] == "X" && self.board[combo[1]] == "X" self.board[combo[2]] == "X"
+        WIN_COMBINATIONS.each do |combo|
+            if self.board[combo[0]] == "X" && self.board[combo[1]] == "X" && self.board[combo[2]] == "X"
                 self.winning_player = "X"
                 winning_combo = combo
                 return combo
-            elsif self.board[combo[0]] == "O" && self.board[combo[1]] == "O" self.board[combo[2]] == "O"
+            elsif self.board[combo[0]] == "O" && self.board[combo[1]] == "O" && self.board[combo[2]] == "O"
                 self.winning_player = "O"
                 winning_combo = combo
                 return combo
@@ -93,13 +93,13 @@ class TicTacToe
         return false
     end
 
-    def full?
+    def full? 
         self.board.each do |n|
             if n == " "
-                 return false
+                return false
             end
         end
-        return false
+        return true
     end
 
     def draw?
@@ -111,14 +111,14 @@ class TicTacToe
     end
 
     def over?
-        if won? || full? 
+        if won? || full?
             return true
         else
             return false
         end
     end
 
-    def winner 
+    def winner
         if won?
             return self.winning_player
         end
@@ -129,10 +129,11 @@ class TicTacToe
             turn
         end
         if won?
-            puts "Congratulations #{winning_player}"
+            puts "Congratulations #{winning_player}!"
         elsif draw?
-            puts " Cat's Game!"
-        end 
+            puts "Cat's Game!"
+        end
     end
 
 end
+
